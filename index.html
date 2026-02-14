@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEO — حلول تقنية نخبوية</title>
+    <meta name="description"
+        content="أول شركة حلول تقنية نخبوية متعددة التخصصات في العراق — ذكاء اصطناعي، نظم معلومات جغرافية، أمن سيبراني">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- DEMO DEPENDENCIES -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="demos.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">GEO</a>
+            <div class="nav-links">
+                <a href="#about" data-i18n="nav_about">عن GEO</a>
+                <a href="#services" data-i18n="nav_services">خدماتنا</a>
+                <a href="#methodology" data-i18n="nav_methodology">منهجيتنا</a>
+                <a href="#research" data-i18n="nav_research">الأبحاث</a>
+                <a href="#team" data-i18n="nav_team">الفريق</a>
+                <a href="#contact" data-i18n="nav_contact">تواصل معنا</a>
+            </div>
+            <button id="lang-toggle" class="lang-toggle" onclick="toggleLanguage()">EN</button>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#about" data-i18n="nav_about" onclick="closeMobileMenu()">عن GEO</a>
+            <a href="#services" data-i18n="nav_services" onclick="closeMobileMenu()">خدماتنا</a>
+            <a href="#methodology" data-i18n="nav_methodology" onclick="closeMobileMenu()">منهجيتنا</a>
+            <a href="#research" data-i18n="nav_research" onclick="closeMobileMenu()">الأبحاث</a>
+            <a href="#team" data-i18n="nav_team" onclick="closeMobileMenu()">الفريق</a>
+            <a href="#contact" data-i18n="nav_contact" onclick="closeMobileMenu()">تواصل معنا</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <canvas id="heroCanvas"></canvas>
+        <div class="hero-content">
+            <div class="hero-logo">GEO</div>
+            <h1 data-i18n="hero_title">حلول تقنية نخبوية</h1>
+            <p class="hero-subtitle" data-i18n="hero_subtitle">أول شركة حلول تقنية نخبوية متعددة التخصصات في العراق</p>
+            <div class="hero-model">
+                <span data-i18n="hero_m1">اندماج</span>
+                <span class="dot">·</span>
+                <span data-i18n="hero_m2">تشخيص</span>
+                <span class="dot">·</span>
+                <span data-i18n="hero_m3">تصميم</span>
+                <span class="dot">·</span>
+                <span data-i18n="hero_m4">تنفيذ</span>
+            </div>
+            <a href="#services" class="hero-cta" data-i18n="hero_cta">اكتشف خدماتنا</a>
+        </div>
+        <div class="hero-scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section section-dark">
+        <div class="container">
+            <div class="section-badge" data-i18n="about_badge">من نحن</div>
+            <h2 class="section-title" data-i18n="about_title">نوع جديد من شركات التقنية</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p data-i18n="about_p1">شركة GEO هي نوع جديد من شركات التقنية، صُمّمت خصيصاً للسوق العراقي. لا تبيع
+                        برامج جاهزة ولا تقدّم خدمات تقنية مجزّأة، بل تتحمّل المسؤولية الكاملة عن التحوّل الرقمي للمؤسسة
+                        من الداخل إلى الخارج.</p>
+                    <p data-i18n="about_p2">نحن نندمج داخل المؤسسة العميلة، ندرس سير عملها الحقيقي، نشخّص الفجوات، ثم
+                        نصمّم وننفّذ أنظمة ملائمة — لا أدوات عامّة مفروضة على بيئات لا تناسبها.</p>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="stat_1_num">٧+</div>
+                        <div class="stat-label" data-i18n="stat_1_label">تخصصات تقنية</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="stat_2_num">٤</div>
+                        <div class="stat-label" data-i18n="stat_2_label">مراحل منهجية</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="stat_3_num">١٠٠٪</div>
+                        <div class="stat-label" data-i18n="stat_3_label">ملكية التحوّل الرقمي</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section section-light">
+        <div class="container">
+            <div class="section-badge dark" data-i18n="services_badge">خدماتنا</div>
+            <h2 class="section-title dark" data-i18n="services_title">ثلاث ركائز أساسية</h2>
+            <p class="section-desc dark" data-i18n="services_desc">قدرات متخصصة تعمل معاً لتقديم تحوّل رقمي شامل</p>
+
+            <!-- Big Three -->
+            <div class="services-big-three">
+                <!-- AI -->
+                <div class="service-card major" data-aos="fade-up">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="40" cy="25" r="8" stroke="currentColor" stroke-width="2" />
+                            <circle cx="20" cy="55" r="6" stroke="currentColor" stroke-width="2" />
+                            <circle cx="60" cy="55" r="6" stroke="currentColor" stroke-width="2" />
+                            <circle cx="40" cy="60" r="5" stroke="currentColor" stroke-width="2" />
+                            <line x1="40" y1="33" x2="40" y2="55" stroke="currentColor" stroke-width="1.5" />
+                            <line x1="35" y1="30" x2="24" y2="50" stroke="currentColor" stroke-width="1.5" />
+                            <line x1="45" y1="30" x2="56" y2="50" stroke="currentColor" stroke-width="1.5" />
+                            <line x1="26" y1="55" x2="35" y2="58" stroke="currentColor" stroke-width="1.5" />
+                            <line x1="54" y1="55" x2="45" y2="58" stroke="currentColor" stroke-width="1.5" />
+                            <circle cx="40" cy="25" r="3" fill="currentColor" opacity="0.3" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="svc_ai_title">الذكاء الاصطناعي</h3>
+                    <p data-i18n="svc_ai_desc">نماذج تعلّم آلي مخصّصة، أنظمة مراقبة وتحسين لحظية تمكّن صانع القرار من
+                        معرفة ما يجري في مؤسسته بنقرات — كأنه يتحدث مع ChatGPT خاص بمؤسسته.</p>
+                    <ul class="service-tags">
+                        <li data-i18n="svc_ai_t1">تحليلات تنبؤية</li>
+                        <li data-i18n="svc_ai_t2">معالجة لغة طبيعية</li>
+                        <li data-i18n="svc_ai_t3">رؤية حاسوبية</li>
+                        <li data-i18n="svc_ai_t4">مراقبة لحظية</li>
+                    </ul>
+                    <a href="#demo-ai" class="demo-link" data-demo-i18n="demo_link_text">شاهد العرض التفاعلي ←</a>
+                </div>
+
+                <!-- GIS -->
+                <div class="service-card major" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="40" cy="40" r="25" stroke="currentColor" stroke-width="2" />
+                            <ellipse cx="40" cy="40" rx="12" ry="25" stroke="currentColor" stroke-width="1.5" />
+                            <line x1="15" y1="30" x2="65" y2="30" stroke="currentColor" stroke-width="1" />
+                            <line x1="15" y1="50" x2="65" y2="50" stroke="currentColor" stroke-width="1" />
+                            <line x1="40" y1="15" x2="40" y2="65" stroke="currentColor" stroke-width="1" />
+                            <circle cx="50" cy="28" r="4" fill="currentColor" opacity="0.4" />
+                            <circle cx="30" cy="45" r="3" fill="currentColor" opacity="0.3" />
+                            <path d="M52 25 L50 32 L48 25 Z" fill="currentColor" opacity="0.6" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="svc_gis_title">نظم المعلومات الجغرافية</h3>
+                    <p data-i18n="svc_gis_desc">منصات GIS مخصّصة بالكامل لبيانات العميل الجغرافية — خرائط تفاعلية، لوحات
+                        قيادة مكانية، وتحليل بيانات جغرافية متكامل مع أنظمة الذكاء الاصطناعي والبنية التحتية.</p>
+                    <ul class="service-tags">
+                        <li data-i18n="svc_gis_t1">خرائط تفاعلية</li>
+                        <li data-i18n="svc_gis_t2">تحليل مكاني</li>
+                        <li data-i18n="svc_gis_t3">لوحات قيادة جغرافية</li>
+                        <li data-i18n="svc_gis_t4">تكامل بيانات</li>
+                    </ul>
+                    <a href="#demo-gis" class="demo-link" data-demo-i18n="demo_link_text">شاهد العرض التفاعلي ←</a>
+                </div>
+
+                <!-- Cybersecurity -->
+                <div class="service-card major" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M40 10 L65 22 L65 42 C65 56 52 66 40 72 C28 66 15 56 15 42 L15 22 Z"
+                                stroke="currentColor" stroke-width="2" fill="none" />
+                            <rect x="33" y="35" width="14" height="12" rx="2" stroke="currentColor" stroke-width="2" />
+                            <path d="M36 35 L36 30 C36 27 38 25 40 25 C42 25 44 27 44 30 L44 35" stroke="currentColor"
+                                stroke-width="2" fill="none" />
+                            <circle cx="40" cy="41" r="2" fill="currentColor" />
+                            <line x1="40" y1="43" x2="40" y2="45" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="svc_cyber_title">الأمن السيبراني</h3>
+                    <p data-i18n="svc_cyber_desc">حماية شاملة من اليوم الأول — تقييم تهديدات، بنية أمنية متينة، مراقبة
+                        مستمرة، واستجابة للحوادث. لا نبني الأنظمة فحسب، بل نحميها.</p>
+                    <ul class="service-tags">
+                        <li data-i18n="svc_cyber_t1">تقييم التهديدات</li>
+                        <li data-i18n="svc_cyber_t2">حماية الأنظمة</li>
+                        <li data-i18n="svc_cyber_t3">مراقبة مستمرة</li>
+                        <li data-i18n="svc_cyber_t4">استجابة للحوادث</li>
+                    </ul>
+                    <a href="#demo-cyber" class="demo-link" data-demo-i18n="demo_link_text">شاهد العرض التفاعلي ←</a>
+                </div>
+            </div>
+
+            <!-- Secondary Services -->
+            <div class="services-secondary">
+                <div class="service-card minor" data-aos="fade-up">
+                    <h4 data-i18n="svc_fs_title">تطوير برمجيات متكامل</h4>
+                    <p data-i18n="svc_fs_desc">أنظمة كاملة: واجهة أمامية، خلفية، API، تحليلات وتقارير</p>
+                </div>
+                <div class="service-card minor" data-aos="fade-up" data-aos-delay="100">
+                    <h4 data-i18n="svc_infra_title">هندسة البنية التحتية</h4>
+                    <p data-i18n="svc_infra_desc">خوادم، قواعد بيانات، استضافة سحابية ومحلية — بنية متينة وقابلة للتوسّع
+                    </p>
+                </div>
+                <div class="service-card minor" data-aos="fade-up" data-aos-delay="200">
+                    <h4 data-i18n="svc_dt_title">استراتيجية التحوّل الرقمي</h4>
+                    <p data-i18n="svc_dt_desc">ملكية كاملة للتحوّل الرقمي — من التشخيص إلى التنفيذ والدعم المستمر</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         INTERACTIVE DEMOS START
+         To rollback: delete from here to INTERACTIVE DEMOS END
+         ═══════════════════════════════════ -->
+
+    <!-- AI Command Center Demo -->
+    <section id="demo-ai" class="section section-demo">
+        <div class="container">
+            <div class="demo-header">
+                <span class="demo-label" data-demo-i18n="demo_ai_label">عرض تفاعلي</span>
+                <h2 data-demo-i18n="demo_ai_title">مركز قيادة الذكاء الاصطناعي</h2>
+                <p data-demo-i18n="demo_ai_desc">هكذا تبدو لوحة قيادة مؤسستك مع GEO — مراقبة لحظية وتحليل ذكي فوري</p>
+            </div>
+            <div class="demo-window">
+                <div class="demo-titlebar">
+                    <div class="tb-dot red"></div>
+                    <div class="tb-dot yellow"></div>
+                    <div class="tb-dot green"></div>
+                    <span class="tb-title" data-demo-i18n="demo_ai_tb">AI Command Center — شركة المثال</span>
+                </div>
+                <div class="ai-dashboard-body">
+                    <!-- Stats Row -->
+                    <div class="dash-stats-row">
+                        <div class="dash-stat-card">
+                            <span class="dash-stat-value" data-target="1247">0</span>
+                            <span class="dash-stat-label" data-demo-i18n="stat_ops">عمليات اليوم</span>
+                        </div>
+                        <div class="dash-stat-card">
+                            <span class="dash-stat-value" data-target="284500" data-suffix="">0</span>
+                            <span class="dash-stat-label" data-demo-i18n="stat_rev">إيرادات الشهر</span>
+                        </div>
+                        <div class="dash-stat-card">
+                            <span class="dash-stat-value" data-target="186">0</span>
+                            <span class="dash-stat-label" data-demo-i18n="stat_emp">الموظفون</span>
+                        </div>
+                        <div class="dash-stat-card">
+                            <span class="dash-stat-value" data-target="91.3" data-suffix="%">0</span>
+                            <span class="dash-stat-label" data-demo-i18n="stat_eff">الكفاءة</span>
+                        </div>
+                    </div>
+
+                    <!-- Department Cards -->
+                    <div class="dash-dept-grid">
+                        <!-- Operations -->
+                        <div class="dept-card">
+                            <div class="dept-card-header">
+                                <h4 data-demo-i18n="dept_ops">العمليات</h4>
+                                <span class="dept-trend up">↑ 4.2%</span>
+                            </div>
+                            <div class="dept-metric-row">
+                                <span class="dept-main-metric">87%</span>
+                                <span class="dept-sub-metric">342 <span
+                                        data-demo-i18n="dept_tasks">مهمة/يوم</span></span>
+                            </div>
+                            <div class="mini-chart">
+                                <div class="bar" data-height="65"></div>
+                                <div class="bar" data-height="72"></div>
+                                <div class="bar" data-height="81"></div>
+                                <div class="bar" data-height="78"></div>
+                                <div class="bar" data-height="85"></div>
+                                <div class="bar" data-height="82"></div>
+                                <div class="bar" data-height="87"></div>
+                            </div>
+                        </div>
+                        <!-- Finance -->
+                        <div class="dept-card">
+                            <div class="dept-card-header">
+                                <h4 data-demo-i18n="dept_fin">المالية</h4>
+                                <span class="dept-trend up">↑ 2.1%</span>
+                            </div>
+                            <div class="dept-metric-row">
+                                <span class="dept-main-metric">93%</span>
+                                <span class="dept-sub-metric"><span data-demo-i18n="dept_accuracy">الدقة</span></span>
+                            </div>
+                            <div class="mini-chart">
+                                <div class="bar" data-height="88"></div>
+                                <div class="bar" data-height="91"></div>
+                                <div class="bar" data-height="89"></div>
+                                <div class="bar" data-height="92"></div>
+                                <div class="bar" data-height="90"></div>
+                                <div class="bar" data-height="93"></div>
+                                <div class="bar" data-height="93"></div>
+                            </div>
+                        </div>
+                        <!-- HR -->
+                        <div class="dept-card">
+                            <div class="dept-card-header">
+                                <h4 data-demo-i18n="dept_hr">الموارد البشرية</h4>
+                                <span class="dept-trend up">↑ 8.5%</span>
+                            </div>
+                            <div class="dept-metric-row">
+                                <span class="dept-main-metric">86%</span>
+                                <span class="dept-sub-metric">12 <span data-demo-i18n="dept_hires">توظيف
+                                        جديد</span></span>
+                            </div>
+                            <div class="mini-chart">
+                                <div class="bar" data-height="78"></div>
+                                <div class="bar" data-height="80"></div>
+                                <div class="bar" data-height="82"></div>
+                                <div class="bar" data-height="81"></div>
+                                <div class="bar" data-height="84"></div>
+                                <div class="bar" data-height="85"></div>
+                                <div class="bar" data-height="86"></div>
+                            </div>
+                        </div>
+                        <!-- Logistics -->
+                        <div class="dept-card">
+                            <div class="dept-card-header">
+                                <h4 data-demo-i18n="dept_log">اللوجستيات</h4>
+                                <span class="dept-trend down">↓ 1.3%</span>
+                            </div>
+                            <div class="dept-metric-row">
+                                <span class="dept-main-metric">78%</span>
+                                <span class="dept-sub-metric"><span data-demo-i18n="dept_ontime">تسليم في
+                                        الوقت</span></span>
+                            </div>
+                            <div class="mini-chart">
+                                <div class="bar" data-height="82"></div>
+                                <div class="bar" data-height="79"></div>
+                                <div class="bar" data-height="75"></div>
+                                <div class="bar" data-height="77"></div>
+                                <div class="bar" data-height="80"></div>
+                                <div class="bar" data-height="76"></div>
+                                <div class="bar" data-height="78"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Chat -->
+                    <div class="ai-chat-panel">
+                        <div class="chat-header">
+                            <div class="chat-header-dot"></div>
+                            <span data-demo-i18n="chat_title">مساعد GEO الذكي</span>
+                        </div>
+                        <div class="chat-messages">
+                            <div class="chat-msg bot" data-demo-i18n="chat_welcome">مرحباً! أنا مساعد GEO الذكي. اختر
+                                سؤالاً أدناه لأقدم لك التحليل فوراً.</div>
+                        </div>
+                        <div class="chat-suggestions">
+                            <button class="chat-suggest-btn" data-q="q1" data-demo-i18n="q1">كيف أداء قسم العمليات
+                                اليوم؟</button>
+                            <button class="chat-suggest-btn" data-q="q2" data-demo-i18n="q2">ما هي المشكلة الأكبر هذا
+                                الأسبوع؟</button>
+                            <button class="chat-suggest-btn" data-q="q3" data-demo-i18n="q3">أعطني ملخص الأداء
+                                المالي</button>
+                            <button class="chat-suggest-btn" data-q="q4" data-demo-i18n="q4">كم عدد الموظفين الجدد هذا
+                                الشهر؟</button>
+                            <button class="chat-reset-btn" data-demo-i18n="chat_reset">إعادة المحادثة</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GIS Live Map Demo -->
+    <section id="demo-gis" class="section section-demo">
+        <div class="container">
+            <div class="demo-header">
+                <span class="demo-label" data-demo-i18n="demo_gis_label">عرض تفاعلي</span>
+                <h2 data-demo-i18n="demo_gis_title">خريطة نظم المعلومات الجغرافية</h2>
+                <p data-demo-i18n="demo_gis_desc">خريطة تفاعلية حقيقية توضح كيف يحلّل GEO البنية التحتية الرقمية
+                    جغرافياً</p>
+            </div>
+            <div class="gis-container">
+                <div class="gis-sidebar">
+                    <div>
+                        <h3 data-demo-i18n="gis_layers">طبقات البيانات</h3>
+                        <div class="gis-layer-toggles">
+                            <button class="gis-layer-btn active" data-layer="readiness">
+                                <span class="gis-layer-dot" style="background:#FBBF24"></span>
+                                <span data-demo-i18n="gis_layer_readiness">الجاهزية الرقمية</span>
+                            </button>
+                            <button class="gis-layer-btn active" data-layer="gov">
+                                <span class="gis-layer-dot" style="background:#C8A84E"></span>
+                                <span data-demo-i18n="gis_layer_gov">المباني الحكومية</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="gis-info-panel">
+                        <h4 data-demo-i18n="gis_info_title">معلومات الموقع</h4>
+                        <p class="gis-info-empty" data-demo-i18n="gis_info_empty">انقر على أي علامة في الخريطة لعرض
+                            التفاصيل</p>
+                        <div class="gis-info-detail">
+                            <div class="gis-info-name"></div>
+                            <div class="gis-info-row">
+                                <span class="gis-info-row-label" data-demo-i18n="gis_readiness">الجاهزية الرقمية</span>
+                                <span class="readiness-badge"></span>
+                            </div>
+                            <div class="gis-info-row">
+                                <span class="gis-info-row-label" data-demo-i18n="gis_current">الأنظمة الحالية</span>
+                                <span class="gis-info-row-value" data-field="current"></span>
+                            </div>
+                            <div class="gis-info-rec" data-field="rec"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gis-map-wrap">
+                    <div id="gisMap"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cybersecurity Operations Demo -->
+    <section id="demo-cyber" class="section section-demo">
+        <div class="container">
+            <div class="demo-header">
+                <span class="demo-label" data-demo-i18n="demo_cyber_label">عرض تفاعلي</span>
+                <h2 data-demo-i18n="demo_cyber_title">مركز عمليات الأمن السيبراني</h2>
+                <p data-demo-i18n="demo_cyber_desc">مراقبة مستمرة، اكتشاف فوري، واستجابة لحظية — هكذا نحمي أنظمتكم</p>
+            </div>
+            <div class="demo-window">
+                <div class="demo-titlebar">
+                    <div class="tb-dot red"></div>
+                    <div class="tb-dot yellow"></div>
+                    <div class="tb-dot green"></div>
+                    <span class="tb-title" data-demo-i18n="demo_cyber_tb">GEO Cybersecurity Operations Center</span>
+                </div>
+                <div class="cyber-body">
+                    <!-- Security Score -->
+                    <div class="cyber-score-section">
+                        <div class="score-ring-wrap">
+                            <svg viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="54" class="score-ring-bg" />
+                                <circle cx="60" cy="60" r="54" class="score-ring-fill"
+                                    style="stroke-dasharray: 339.3; stroke-dashoffset: 339.3" />
+                            </svg>
+                            <span class="score-ring-value">0</span>
+                        </div>
+                        <span class="score-ring-label" data-demo-i18n="cyber_score_label">مستوى الأمان</span>
+                    </div>
+                    <!-- Stats -->
+                    <div class="cyber-stats-grid">
+                        <div class="cyber-stat">
+                            <span class="cyber-stat-value" data-target="342">0</span>
+                            <span class="cyber-stat-label" data-demo-i18n="cyber_threats">تهديدات تم صدّها</span>
+                        </div>
+                        <div class="cyber-stat">
+                            <span class="cyber-stat-value" style="color: #34D399;">0</span>
+                            <span class="cyber-stat-label" data-demo-i18n="cyber_breaches">اختراقات</span>
+                        </div>
+                        <div class="cyber-stat">
+                            <span class="cyber-stat-value">4.2ms</span>
+                            <span class="cyber-stat-label" data-demo-i18n="cyber_response">زمن الاستجابة</span>
+                        </div>
+                        <div class="cyber-stat">
+                            <span class="cyber-stat-value">99.97%</span>
+                            <span class="cyber-stat-label" data-demo-i18n="cyber_uptime">وقت التشغيل</span>
+                        </div>
+                    </div>
+                    <!-- Threat Feed -->
+                    <div class="cyber-feed-section">
+                        <div class="feed-header">
+                            <div class="feed-live-dot"></div>
+                            <span data-demo-i18n="cyber_feed_title">سجل التهديدات المباشر</span>
+                        </div>
+                        <div class="threat-feed-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         INTERACTIVE DEMOS END
+         ═══════════════════════════════════ -->
+
+    <!-- Capabilities Section — "Beyond the Demo" -->
+    <section id="capabilities" class="section section-dark">
+        <div class="container">
+            <div class="section-badge" data-i18n="cap_badge">ما وراء العرض</div>
+            <h2 class="section-title" data-i18n="cap_title">ما شاهدته مجرد مثال — إليك ما نبنيه حقاً</h2>
+            <p class="section-desc" data-i18n="cap_desc">العروض التفاعلية أعلاه هي نماذج مبسّطة. القدرات الحقيقية لـ GEO
+                تمتد أبعد بكثير.</p>
+
+            <div class="cap-pillars">
+                <!-- AI Pillar -->
+                <div class="cap-pillar" data-aos="fade-up">
+                    <div class="cap-sketch-wrap">
+                        <svg class="cap-sketch" viewBox="0 0 200 160" fill="none">
+                            <!-- Brain outline -->
+                            <path class="sketch-line"
+                                d="M100 20 C65 20 40 45 40 70 C40 95 55 110 70 115 L70 130 L130 130 L130 115 C145 110 160 95 160 70 C160 45 135 20 100 20Z"
+                                stroke="var(--gold)" stroke-width="1.5" />
+                            <!-- Neural connections -->
+                            <line class="sketch-line" x1="70" y1="55" x2="100" y2="75" stroke="var(--gold)"
+                                stroke-width="1" opacity="0.6" />
+                            <line class="sketch-line" x1="130" y1="55" x2="100" y2="75" stroke="var(--gold)"
+                                stroke-width="1" opacity="0.6" />
+                            <line class="sketch-line" x1="80" y1="90" x2="100" y2="75" stroke="var(--gold)"
+                                stroke-width="1" opacity="0.6" />
+                            <line class="sketch-line" x1="120" y1="90" x2="100" y2="75" stroke="var(--gold)"
+                                stroke-width="1" opacity="0.6" />
+                            <!-- Nodes -->
+                            <circle class="sketch-node" cx="70" cy="55" r="4" fill="var(--gold)" opacity="0" />
+                            <circle class="sketch-node" cx="130" cy="55" r="4" fill="var(--gold)" opacity="0" />
+                            <circle class="sketch-node" cx="100" cy="75" r="5" fill="var(--gold)" opacity="0" />
+                            <circle class="sketch-node" cx="80" cy="90" r="4" fill="var(--gold)" opacity="0" />
+                            <circle class="sketch-node" cx="120" cy="90" r="4" fill="var(--gold)" opacity="0" />
+                            <!-- Data streams -->
+                            <line class="sketch-line delay-2" x1="100" y1="130" x2="100" y2="155" stroke="var(--gold)"
+                                stroke-width="1" stroke-dasharray="4,4" />
+                            <line class="sketch-line delay-2" x1="80" y1="130" x2="70" y2="155" stroke="var(--gold)"
+                                stroke-width="1" stroke-dasharray="4,4" />
+                            <line class="sketch-line delay-2" x1="120" y1="130" x2="130" y2="155" stroke="var(--gold)"
+                                stroke-width="1" stroke-dasharray="4,4" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="cap_ai_title">قوة الذكاء الاصطناعي</h3>
+                    <ul class="cap-list">
+                        <li data-i18n="cap_ai_1">كشف الأنماط الشاذة قبل وقوعها — تنبؤي وليس تفاعلي</li>
+                        <li data-i18n="cap_ai_2">واجهة محادثة ذكية لأي قاعدة بيانات بلغة طبيعية</li>
+                        <li data-i18n="cap_ai_3">رؤية حاسوبية لمراقبة الجودة في الخطوط الصناعية</li>
+                        <li data-i18n="cap_ai_4">توليد تقارير تلقائية من بيانات المؤسسة الحية</li>
+                        <li data-i18n="cap_ai_5">تدريب نماذج تعلّم آلي مخصّصة لاحتياجات العميل</li>
+                    </ul>
+                </div>
+
+                <!-- GIS Pillar -->
+                <div class="cap-pillar" data-aos="fade-up" data-aos-delay="150">
+                    <div class="cap-sketch-wrap">
+                        <svg class="cap-sketch" viewBox="0 0 200 160" fill="none">
+                            <!-- Map layers -->
+                            <rect class="sketch-line" x="30" y="80" width="140" height="70" rx="4" stroke="var(--gold)"
+                                stroke-width="1.5" opacity="0.4" />
+                            <rect class="sketch-line delay-1" x="40" y="55" width="140" height="70" rx="4"
+                                stroke="var(--gold)" stroke-width="1.5" opacity="0.6" />
+                            <rect class="sketch-line delay-2" x="50" y="30" width="140" height="70" rx="4"
+                                stroke="var(--gold)" stroke-width="1.5" />
+                            <!-- Map pins -->
+                            <circle class="sketch-node" cx="90" cy="55" r="4" fill="var(--gold)" opacity="0" />
+                            <circle class="sketch-node" cx="130" cy="45" r="3" fill="var(--gold)" opacity="0" />
+                            <circle class="sketch-node" cx="110" cy="70" r="3.5" fill="var(--gold)" opacity="0" />
+                            <!-- Grid lines -->
+                            <line class="sketch-line delay-2" x1="70" y1="30" x2="70" y2="100" stroke="var(--gold)"
+                                stroke-width="0.5" opacity="0.3" />
+                            <line class="sketch-line delay-2" x1="110" y1="30" x2="110" y2="100" stroke="var(--gold)"
+                                stroke-width="0.5" opacity="0.3" />
+                            <line class="sketch-line delay-2" x1="150" y1="30" x2="150" y2="100" stroke="var(--gold)"
+                                stroke-width="0.5" opacity="0.3" />
+                            <line class="sketch-line delay-2" x1="50" y1="55" x2="190" y2="55" stroke="var(--gold)"
+                                stroke-width="0.5" opacity="0.3" />
+                            <line class="sketch-line delay-2" x1="50" y1="75" x2="190" y2="75" stroke="var(--gold)"
+                                stroke-width="0.5" opacity="0.3" />
+                            <!-- Satellite arc -->
+                            <path class="sketch-line delay-1" d="M160 15 Q180 5 195 20" stroke="var(--gold)"
+                                stroke-width="1" opacity="0.5" />
+                            <circle class="sketch-node" cx="160" cy="15" r="3" fill="var(--gold)" opacity="0" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="cap_gis_title">قوة نظم المعلومات الجغرافية</h3>
+                    <ul class="cap-list">
+                        <li data-i18n="cap_gis_1">خرائط بنية تحتية على مستوى المدينة بالكامل</li>
+                        <li data-i18n="cap_gis_2">تتبع الأسطول والأصول بالزمن الحقيقي</li>
+                        <li data-i18n="cap_gis_3">لوحات مراقبة بيئية وتحليل الأراضي</li>
+                        <li data-i18n="cap_gis_4">تحليل استخدام الأراضي وتخطيط المناطق</li>
+                        <li data-i18n="cap_gis_5">أنظمة دعم القرار المكاني للحكومات والشركات</li>
+                    </ul>
+                </div>
+
+                <!-- Cybersecurity Pillar -->
+                <div class="cap-pillar" data-aos="fade-up" data-aos-delay="300">
+                    <div class="cap-sketch-wrap">
+                        <svg class="cap-sketch" viewBox="0 0 200 160" fill="none">
+                            <!-- Shield -->
+                            <path class="sketch-line"
+                                d="M100 15 L160 35 L160 75 C160 110 130 135 100 145 C70 135 40 110 40 75 L40 35 Z"
+                                stroke="var(--gold)" stroke-width="1.5" />
+                            <!-- Lock body -->
+                            <rect class="sketch-line delay-1" x="82" y="72" width="36" height="28" rx="3"
+                                stroke="var(--gold)" stroke-width="1.5" />
+                            <!-- Lock shackle -->
+                            <path class="sketch-line delay-1"
+                                d="M88 72 L88 62 C88 52 94 46 100 46 C106 46 112 52 112 62 L112 72" stroke="var(--gold)"
+                                stroke-width="1.5" />
+                            <!-- Keyhole -->
+                            <circle class="sketch-node" cx="100" cy="84" r="4" fill="var(--gold)" opacity="0" />
+                            <line class="sketch-line delay-2" x1="100" y1="88" x2="100" y2="94" stroke="var(--gold)"
+                                stroke-width="2" />
+                            <!-- Network nodes around shield -->
+                            <circle class="sketch-node" cx="25" cy="50" r="3" fill="var(--gold)" opacity="0" />
+                            <circle class="sketch-node" cx="175" cy="50" r="3" fill="var(--gold)" opacity="0" />
+                            <circle class="sketch-node" cx="25" cy="110" r="3" fill="var(--gold)" opacity="0" />
+                            <circle class="sketch-node" cx="175" cy="110" r="3" fill="var(--gold)" opacity="0" />
+                            <!-- Connection lines -->
+                            <line class="sketch-line delay-2" x1="25" y1="50" x2="40" y2="55" stroke="var(--gold)"
+                                stroke-width="0.8" opacity="0.4" />
+                            <line class="sketch-line delay-2" x1="175" y1="50" x2="160" y2="55" stroke="var(--gold)"
+                                stroke-width="0.8" opacity="0.4" />
+                            <line class="sketch-line delay-2" x1="25" y1="110" x2="50" y2="100" stroke="var(--gold)"
+                                stroke-width="0.8" opacity="0.4" />
+                            <line class="sketch-line delay-2" x1="175" y1="110" x2="150" y2="100" stroke="var(--gold)"
+                                stroke-width="0.8" opacity="0.4" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="cap_cyber_title">قوة الأمن السيبراني</h3>
+                    <ul class="cap-list">
+                        <li data-i18n="cap_cyber_1">اختبار اختراق شامل وتقييم الثغرات</li>
+                        <li data-i18n="cap_cyber_2">مركز عمليات أمنية يعمل على مدار الساعة</li>
+                        <li data-i18n="cap_cyber_3">استجابة فورية للحوادث والتحليل الجنائي الرقمي</li>
+                        <li data-i18n="cap_cyber_4">تصميم بنية أمنية من الصفر للمؤسسات</li>
+                        <li data-i18n="cap_cyber_5">ضمان الامتثال للمعايير التنظيمية والدولية</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Cross-discipline message -->
+            <div class="cap-integration" data-aos="fade-up">
+                <div class="cap-integration-line"></div>
+                <p data-i18n="cap_integration">القوة الحقيقية تكمن في تكامل هذه التخصصات الثلاثة — لا شركة في العراق
+                    تجمعها تحت سقف واحد.</p>
+                <div class="cap-integration-line"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Section -->
+    <section id="methodology" class="section section-dark">
+        <div class="container">
+            <div class="section-badge" data-i18n="method_badge">منهجيتنا</div>
+            <h2 class="section-title" data-i18n="method_title">ما يجعل GEO مختلفة جذرياً</h2>
+            <p class="section-desc" data-i18n="method_desc">قبل كتابة سطر واحد من الكود، نفهم كيف تعمل مؤسستك فعلياً</p>
+
+            <div class="methodology-timeline">
+                <div class="method-line"></div>
+
+                <div class="method-step" data-aos="fade-up">
+                    <div class="method-number">01</div>
+                    <div class="method-content">
+                        <h3 data-i18n="m_step1_title">الاندماج</h3>
+                        <p data-i18n="m_step1_desc">نرسل متخصصينا إلى داخل مؤسستك. يجلسون مع كل قسم، يراقبون العمليات
+                            اليومية، يوثّقون سير العمل بالتفصيل — لأسبوعين إلى ثلاثة أسابيع.</p>
+                    </div>
+                    <div class="method-label" data-i18n="m_step1_en">EMBED</div>
+                </div>
+
+                <div class="method-step" data-aos="fade-up" data-aos-delay="150">
+                    <div class="method-number">02</div>
+                    <div class="method-content">
+                        <h3 data-i18n="m_step2_title">التشخيص</h3>
+                        <p data-i18n="m_step2_desc">يجتمع الفريق كاملاً لمراجعة التقرير التشخيصي. نحدّد أين يمكن للذكاء
+                            الاصطناعي وGIS والأمن السيبراني أن تخلق أكبر قيمة، ونضع خطة تدخّل مرتّبة.</p>
+                    </div>
+                    <div class="method-label" data-i18n="m_step2_en">DIAGNOSE</div>
+                </div>
+
+                <div class="method-step" data-aos="fade-up" data-aos-delay="300">
+                    <div class="method-number">03</div>
+                    <div class="method-content">
+                        <h3 data-i18n="m_step3_title">التصميم</h3>
+                        <p data-i18n="m_step3_desc">كل متخصص يبني في مجاله: الذكاء الاصطناعي، GIS، الأمن السيبراني،
+                            البنية التحتية — بتركيز تام وبدون تداخل. النتيجة: جودة أعلى وسرعة أكبر.</p>
+                    </div>
+                    <div class="method-label" data-i18n="m_step3_en">DESIGN</div>
+                </div>
+
+                <div class="method-step" data-aos="fade-up" data-aos-delay="450">
+                    <div class="method-number">04</div>
+                    <div class="method-content">
+                        <h3 data-i18n="m_step4_title">التنفيذ</h3>
+                        <p data-i18n="m_step4_desc">نسلّم نظاماً مكتملاً مع توثيق شامل وتدريب عملي. ثم نبقى — دعم تقني
+                            مستمر يضمن أن النظام يتطوّر مع احتياجاتك.</p>
+                    </div>
+                    <div class="method-label" data-i18n="m_step4_en">DELIVER</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Section -->
+    <section id="research" class="section section-accent">
+        <div class="container">
+            <div class="section-badge" data-i18n="research_badge">الأبحاث والابتكار</div>
+            <h2 class="section-title" data-i18n="research_title">ما وراء الخدمات — نحو الابتكار</h2>
+            <p class="section-desc" data-i18n="research_desc">GEO لا تبني شركة لتبقى بنفس الحجم — بل منصة للتوسع في أكثر
+                مجالات التقنية تقدماً</p>
+
+            <div class="research-grid">
+                <div class="research-card" data-aos="fade-up">
+                    <h3 data-i18n="r_quantum_title">الحوسبة الكمومية</h3>
+                    <p data-i18n="r_quantum_desc">استكشاف التطبيقات العملية للخوارزميات الكمومية في التحسين والمحاكاة
+                        واتخاذ القرار</p>
+                </div>
+                <div class="research-card" data-aos="fade-up" data-aos-delay="100">
+                    <h3 data-i18n="r_models_title">نماذج اقتصادية كمومية</h3>
+                    <p data-i18n="r_models_desc">نماذج اقتصادية مبنية على الحوسبة الكمومية للتنبّؤ وتقييم المخاطر
+                        والتخطيط الاستراتيجي</p>
+                </div>
+                <div class="research-card" data-aos="fade-up" data-aos-delay="200">
+                    <h3 data-i18n="r_ai_title">نمذجة ذكاء اصطناعي متقدمة</h3>
+                    <p data-i18n="r_ai_desc">دفع حدود ما يمكن أن يحققه الذكاء الاصطناعي في القطاعات ذات الصلة بالسوق
+                        العراقي والإقليمي</p>
+                </div>
+                <div class="research-card" data-aos="fade-up" data-aos-delay="300">
+                    <h3 data-i18n="r_product_title">مخرجات قابلة للتسويق</h3>
+                    <p data-i18n="r_product_desc">أبحاث تولّد إيرادات — حلول مُنتَجة وجاهزة للبيع، ليست مجرد تمارين
+                        أكاديمية</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="section section-light">
+        <div class="container">
+            <div class="section-badge dark" data-i18n="team_badge">الفريق</div>
+            <h2 class="section-title dark" data-i18n="team_title">الجودة فوق الكمّ</h2>
+            <p class="section-desc dark" data-i18n="team_desc">كل شخص يُختار لتميّزه الواضح في تخصصه المحدّد — لا أحد
+                يعمل خارج مجال خبرته</p>
+
+            <div class="team-grid">
+                <div class="team-card" data-aos="fade-up">
+                    <h4 data-i18n="t_pm">مدير المشاريع</h4>
+                    <p data-i18n="t_pm_desc">العمود الفقري التشغيلي — تنسيق المشاريع وضمان التسليم</p>
+                </div>
+                <div class="team-card" data-aos="fade-up" data-aos-delay="80">
+                    <h4 data-i18n="t_ai">مهندس الذكاء الاصطناعي</h4>
+                    <p data-i18n="t_ai_desc">تصميم وبناء نماذج التعلّم الآلي والأنظمة الذكية</p>
+                </div>
+                <div class="team-card" data-aos="fade-up" data-aos-delay="160">
+                    <h4 data-i18n="t_gis">أخصائي نظم المعلومات الجغرافية</h4>
+                    <p data-i18n="t_gis_desc">بناء منصات GIS وتحليل البيانات المكانية</p>
+                </div>
+                <div class="team-card" data-aos="fade-up" data-aos-delay="240">
+                    <h4 data-i18n="t_ba">محلل الأعمال</h4>
+                    <p data-i18n="t_ba_desc">عيون GEO وآذانها داخل مؤسسة العميل</p>
+                </div>
+                <div class="team-card" data-aos="fade-up" data-aos-delay="320">
+                    <h4 data-i18n="t_infra">مهندس البنية التحتية</h4>
+                    <p data-i18n="t_infra_desc">خوادم، قواعد بيانات، شبكات — كل ما يعمل تحت السطح</p>
+                </div>
+                <div class="team-card" data-aos="fade-up" data-aos-delay="400">
+                    <h4 data-i18n="t_cyber">أخصائي الأمن السيبراني</h4>
+                    <p data-i18n="t_cyber_desc">حماية جميع الأنظمة — تقييم التهديدات والمراقبة والاستجابة</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact / CTA Section -->
+    <section id="contact" class="section section-cta">
+        <div class="container">
+            <h2 data-i18n="cta_title">ابدأ رحلة التحوّل الرقمي</h2>
+            <p data-i18n="cta_desc">GEO لا تبيع برمجيات — GEO تبني مستقبل المؤسسات</p>
+            <div class="cta-actions">
+                <a href="mailto:info@geo-iq.com" class="cta-button primary" data-i18n="cta_btn_email">تواصل عبر
+                    البريد</a>
+            </div>
+            <div class="cta-model">
+                <span data-i18n="hero_m1">اندماج</span>
+                <span class="dot">·</span>
+                <span data-i18n="hero_m2">تشخيص</span>
+                <span class="dot">·</span>
+                <span data-i18n="hero_m3">تصميم</span>
+                <span class="dot">·</span>
+                <span data-i18n="hero_m4">تنفيذ</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">GEO</div>
+                <p data-i18n="footer_tagline">الخطوة الأولى نحو بناء مستقبل العراق التقني تبدأ من هنا</p>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 GEO Technology Solutions. <span data-i18n="footer_rights">جميع الحقوق محفوظة</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <!-- DEMO DEPENDENCIES -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="demos.js"></script>
+</body>
+
+</html>
