@@ -29,9 +29,9 @@ const translations = {
         svc_ai_title: 'الذكاء الاصطناعي',
         svc_ai_desc: 'نماذج تعلّم آلي مخصّصة، أنظمة مراقبة وتحسين لحظية تمكّن صانع القرار من معرفة ما يجري في مؤسسته بنقرات — كأنه يتحدث مع ChatGPT خاص بمؤسسته.',
         svc_ai_t1: 'تحليلات تنبؤية', svc_ai_t2: 'معالجة لغة طبيعية', svc_ai_t3: 'رؤية حاسوبية', svc_ai_t4: 'مراقبة لحظية',
-        svc_gis_title: 'نظم المعلومات الجغرافية',
-        svc_gis_desc: 'منصات GIS مخصّصة بالكامل لبيانات العميل الجغرافية — خرائط تفاعلية، لوحات قيادة مكانية، وتحليل بيانات جغرافية متكامل مع أنظمة الذكاء الاصطناعي والبنية التحتية.',
-        svc_gis_t1: 'خرائط تفاعلية', svc_gis_t2: 'تحليل مكاني', svc_gis_t3: 'لوحات قيادة جغرافية', svc_gis_t4: 'تكامل بيانات',
+        svc_gis_title: 'نظم المعلومات المكانية',
+        svc_gis_desc: 'منصات GIS مخصّصة بالكامل لبيانات العميل المكانية — خرائط تفاعلية، لوحات قيادة مكانية، وتحليل بيانات مكانية متكامل مع أنظمة الذكاء الاصطناعي والبنية التحتية.',
+        svc_gis_t1: 'خرائط تفاعلية', svc_gis_t2: 'تحليل مكاني', svc_gis_t3: 'لوحات قيادة مكانية', svc_gis_t4: 'تكامل بيانات',
         svc_cyber_title: 'الأمن السيبراني',
         svc_cyber_desc: 'حماية شاملة من اليوم الأول — تقييم تهديدات، بنية أمنية متينة، مراقبة مستمرة، واستجابة للحوادث. لا نبني الأنظمة فحسب، بل نحميها.',
         svc_cyber_t1: 'تقييم التهديدات', svc_cyber_t2: 'حماية الأنظمة', svc_cyber_t3: 'مراقبة مستمرة', svc_cyber_t4: 'استجابة للحوادث',
@@ -64,7 +64,7 @@ const translations = {
         cap_ai_3: 'رؤية حاسوبية لمراقبة الجودة في الخطوط الصناعية',
         cap_ai_4: 'توليد تقارير تلقائية من بيانات المؤسسة الحية',
         cap_ai_5: 'تدريب نماذج تعلّم آلي مخصّصة لاحتياجات العميل',
-        cap_gis_title: 'قوة نظم المعلومات الجغرافية',
+        cap_gis_title: 'قوة نظم المعلومات المكانية',
         cap_gis_1: 'خرائط بنية تحتية على مستوى المدينة بالكامل',
         cap_gis_2: 'تتبع الأسطول والأصول بالزمن الحقيقي',
         cap_gis_3: 'لوحات مراقبة بيئية وتحليل الأراضي',
@@ -82,7 +82,7 @@ const translations = {
         team_desc: 'كل شخص يُختار لتميّزه الواضح في تخصصه المحدّد — لا أحد يعمل خارج مجال خبرته',
         t_pm: 'مدير المشاريع', t_pm_desc: 'العمود الفقري التشغيلي — تنسيق المشاريع وضمان التسليم',
         t_ai: 'مهندس الذكاء الاصطناعي', t_ai_desc: 'تصميم وبناء نماذج التعلّم الآلي والأنظمة الذكية',
-        t_gis: 'أخصائي نظم المعلومات الجغرافية', t_gis_desc: 'بناء منصات GIS وتحليل البيانات المكانية',
+        t_gis: 'أخصائي نظم المعلومات المكانية', t_gis_desc: 'بناء منصات GIS وتحليل البيانات المكانية',
         t_ba: 'محلل الأعمال', t_ba_desc: 'عيون GEO وآذانها داخل مؤسسة العميل',
         t_infra: 'مهندس البنية التحتية', t_infra_desc: 'خوادم، قواعد بيانات، شبكات — كل ما يعمل تحت السطح',
         t_cyber: 'أخصائي الأمن السيبراني', t_cyber_desc: 'حماية جميع الأنظمة — تقييم التهديدات والمراقبة والاستجابة',
@@ -214,331 +214,83 @@ function applyLanguage() {
     });
 }
 
-// ── Canvas: GIS Map + AI Neural Animation ──
+// ── Canvas Particle Animation ──
 function initCanvas() {
     const canvas = document.getElementById('heroCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
-    let width, height, time = 0;
+    let width, height, particles, animationId;
+    const PARTICLE_COUNT = 60;
+    const CONNECTION_DIST = 150;
     const GOLD = { r: 200, g: 168, b: 78 };
-    const g = (a) => `rgba(${GOLD.r},${GOLD.g},${GOLD.b},${a})`;
-
-    // ── City nodes (represent real Iraqi cities on the map) ──
-    const cityData = [
-        { name: 'Baghdad', lat: 33.31, lon: 44.37, size: 6, primary: true },
-        { name: 'Basra', lat: 30.51, lon: 47.78, size: 4.5, primary: true },
-        { name: 'Erbil', lat: 36.19, lon: 44.01, size: 4.5, primary: true },
-        { name: 'Mosul', lat: 36.34, lon: 43.12, size: 4, primary: false },
-        { name: 'Najaf', lat: 32.00, lon: 44.34, size: 3.5, primary: false },
-        { name: 'Karbala', lat: 32.62, lon: 44.02, size: 3, primary: false },
-        { name: 'Kirkuk', lat: 35.47, lon: 44.39, size: 3.5, primary: false },
-        { name: 'Sulaymaniyah', lat: 35.56, lon: 45.43, size: 3, primary: false },
-        { name: 'Nasiriyah', lat: 31.04, lon: 46.26, size: 3, primary: false },
-        { name: 'Amarah', lat: 31.84, lon: 47.15, size: 2.5, primary: false },
-        { name: 'Tikrit', lat: 34.61, lon: 43.68, size: 2.5, primary: false },
-        { name: 'Samawah', lat: 31.32, lon: 45.28, size: 2.5, primary: false },
-    ];
-
-    // Connections (AI neural links between cities)
-    const connections = [
-        [0, 1], [0, 2], [0, 3], [0, 4], [0, 6],  // Baghdad hub
-        [1, 8], [1, 9], [2, 3], [2, 7], [3, 10],  // Secondary
-        [4, 5], [6, 7], [6, 10], [8, 11], [5, 11], // Tertiary
-    ];
-
-    let cities = [];
-    let dataFlows = [];
-
-    // ── Map projection: lat/lon → canvas coordinates ──
-    // Map bounds (covers Iraq region with padding)
-    const mapBounds = { latMin: 29.5, latMax: 37.5, lonMin: 41.5, lonMax: 49.0 };
-
-    function project(lat, lon) {
-        const px = ((lon - mapBounds.lonMin) / (mapBounds.lonMax - mapBounds.lonMin));
-        const py = 1 - ((lat - mapBounds.latMin) / (mapBounds.latMax - mapBounds.latMin));
-        // Center the map on the canvas with margins
-        const marginX = width * 0.12;
-        const marginY = height * 0.1;
-        const mapW = width - marginX * 2;
-        const mapH = height - marginY * 2;
-        return {
-            x: marginX + px * mapW,
-            y: marginY + py * mapH
-        };
-    }
 
     function resize() {
         width = canvas.width = canvas.offsetWidth;
         height = canvas.height = canvas.offsetHeight;
-        // Rebuild projected positions
-        cities = cityData.map((c, i) => {
-            const pos = project(c.lat, c.lon);
-            return { ...c, x: pos.x, y: pos.y, phase: i * 0.7, idx: i };
-        });
-        createDataFlows();
     }
 
-    function createDataFlows() {
-        dataFlows = [];
-        connections.forEach(([from, to]) => {
-            // 1–2 particles per connection
-            const count = 1 + (cities[from].primary && cities[to].primary ? 1 : 0);
-            for (let i = 0; i < count; i++) {
-                dataFlows.push({
-                    from, to,
-                    t: Math.random(),
-                    speed: 0.0015 + Math.random() * 0.003,
-                    size: 1.5 + Math.random() * 1.5,
-                    reverse: Math.random() > 0.5,
-                });
-            }
-        });
-    }
-
-    // ── Draw: Clean lat/lon grid ──
-    function drawGrid() {
-        ctx.lineWidth = 0.5;
-        // Latitude lines (every 1 degree)
-        for (let lat = 30; lat <= 37; lat++) {
-            const p1 = project(lat, mapBounds.lonMin);
-            const p2 = project(lat, mapBounds.lonMax);
-            const isWhole = lat % 2 === 0;
-            ctx.strokeStyle = g(isWhole ? 0.06 : 0.025);
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-            // Label
-            if (isWhole && width > 600) {
-                ctx.font = '9px Inter, monospace';
-                ctx.fillStyle = g(0.1);
-                ctx.fillText(`${lat}°N`, p1.x - 36, p1.y + 3);
-            }
-        }
-        // Longitude lines (every 1 degree)
-        for (let lon = 42; lon <= 48; lon++) {
-            const p1 = project(mapBounds.latMax, lon);
-            const p2 = project(mapBounds.latMin, lon);
-            const isWhole = lon % 2 === 0;
-            ctx.strokeStyle = g(isWhole ? 0.06 : 0.025);
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-            if (isWhole && width > 600) {
-                ctx.font = '9px Inter, monospace';
-                ctx.fillStyle = g(0.1);
-                ctx.fillText(`${lon}°E`, p1.x - 10, p1.y - 8);
-            }
+    function createParticles() {
+        particles = [];
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                r: Math.random() * 2 + 1,
+            });
         }
     }
 
-    // ── Draw: Simplified Iraq border outline ──
-    function drawIraqOutline() {
-        // Simplified Iraq border coordinates
-        const border = [
-            [29.1, 47.7], [30.0, 48.0], [30.5, 47.8], [31.0, 47.7],
-            [32.0, 47.4], [33.0, 46.0], [33.7, 45.8], [34.5, 45.5],
-            [35.0, 45.7], [35.8, 45.4], [36.3, 45.3], [37.1, 44.8],
-            [37.3, 44.2], [37.1, 43.5], [36.8, 43.0], [36.5, 42.5],
-            [36.8, 42.0], [37.1, 42.4], [37.3, 42.2], [37.1, 41.3],
-            [36.0, 41.2], [35.5, 41.0], [34.5, 41.2], [33.5, 41.5],
-            [33.0, 41.6], [32.5, 42.0], [32.0, 42.5], [31.5, 42.8],
-            [31.0, 43.5], [30.5, 44.0], [30.0, 44.5], [29.5, 45.0],
-            [29.0, 46.0], [28.8, 47.0], [29.1, 47.7],
-        ];
-
-        ctx.beginPath();
-        border.forEach(([lat, lon], i) => {
-            const p = project(lat, lon);
-            if (i === 0) ctx.moveTo(p.x, p.y);
-            else ctx.lineTo(p.x, p.y);
-        });
-        ctx.closePath();
-        ctx.strokeStyle = g(0.12);
-        ctx.lineWidth = 1.2;
-        ctx.stroke();
-
-        // Subtle fill
-        ctx.fillStyle = g(0.02);
-        ctx.fill();
-    }
-
-    // ── Draw: City markers ──
-    function drawCities() {
-        cities.forEach(c => {
-            const pulse = 0.7 + 0.3 * Math.sin(time * 0.8 + c.phase);
-            const r = c.size * pulse;
-
-            // Outer glow for primary cities
-            if (c.primary) {
-                const glowR = r * 5;
-                const grad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, glowR);
-                grad.addColorStop(0, g(0.1 * pulse));
-                grad.addColorStop(1, g(0));
-                ctx.fillStyle = grad;
-                ctx.beginPath();
-                ctx.arc(c.x, c.y, glowR, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Slow scan ring
-                const scanPhase = (time * 0.3 + c.phase) % (Math.PI * 2);
-                const scanT = scanPhase / (Math.PI * 2);
-                const scanR = scanT * 35;
-                ctx.beginPath();
-                ctx.arc(c.x, c.y, scanR, 0, Math.PI * 2);
-                ctx.strokeStyle = g((1 - scanT) * 0.1);
-                ctx.lineWidth = 0.8;
-                ctx.stroke();
-            }
-
-            // City dot
-            ctx.beginPath();
-            ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
-            ctx.fillStyle = g(c.primary ? 0.7 * pulse : 0.4 * pulse);
-            ctx.fill();
-
-            // Outer ring
-            ctx.beginPath();
-            ctx.arc(c.x, c.y, r + 1.5, 0, Math.PI * 2);
-            ctx.strokeStyle = g(c.primary ? 0.4 : 0.2);
-            ctx.lineWidth = 0.6;
-            ctx.stroke();
-
-            // City name label
-            if (width > 600) {
-                ctx.font = c.primary ? 'bold 10px Inter, sans-serif' : '8px Inter, sans-serif';
-                ctx.fillStyle = g(c.primary ? 0.25 : 0.12);
-                ctx.fillText(c.name, c.x + r + 6, c.y + 3);
-            }
-        });
-    }
-
-    // ── Draw: AI neural connections between cities ──
-    function drawConnections() {
-        connections.forEach(([fromIdx, toIdx]) => {
-            const from = cities[fromIdx];
-            const to = cities[toIdx];
-            if (!from || !to) return;
-
-            // Faint connection line
-            ctx.beginPath();
-            ctx.moveTo(from.x, from.y);
-            // Gentle curve
-            const mx = (from.x + to.x) / 2;
-            const my = (from.y + to.y) / 2;
-            const dx = to.x - from.x;
-            const dy = to.y - from.y;
-            const cx = mx + dy * 0.12;
-            const cy = my - dx * 0.12;
-            ctx.quadraticCurveTo(cx, cy, to.x, to.y);
-
-            const isPrimary = from.primary && to.primary;
-            ctx.strokeStyle = g(isPrimary ? 0.08 : 0.04);
-            ctx.lineWidth = isPrimary ? 0.8 : 0.5;
-            ctx.stroke();
-        });
-    }
-
-    // ── Draw: AI data particles flowing along connections ──
-    function drawDataFlows() {
-        dataFlows.forEach(p => {
-            const from = cities[p.reverse ? p.to : p.from];
-            const to = cities[p.reverse ? p.from : p.to];
-            if (!from || !to) return;
-
-            const mx = (from.x + to.x) / 2;
-            const my = (from.y + to.y) / 2;
-            const dx = to.x - from.x;
-            const dy = to.y - from.y;
-            const cx = mx + dy * 0.12;
-            const cy = my - dx * 0.12;
-
-            // Position on bezier
-            const t = p.t;
-            const invT = 1 - t;
-            const px = invT * invT * from.x + 2 * invT * t * cx + t * t * to.x;
-            const py = invT * invT * from.y + 2 * invT * t * cy + t * t * to.y;
-
-            // Glow
-            const glowR = p.size * 4;
-            const grad = ctx.createRadialGradient(px, py, 0, px, py, glowR);
-            grad.addColorStop(0, g(0.35));
-            grad.addColorStop(1, g(0));
-            ctx.fillStyle = grad;
-            ctx.beginPath();
-            ctx.arc(px, py, glowR, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Core
-            ctx.beginPath();
-            ctx.arc(px, py, p.size, 0, Math.PI * 2);
-            ctx.fillStyle = g(0.8);
-            ctx.fill();
-
-            // Advance
-            p.t += p.speed;
-            if (p.t >= 1) {
-                p.t = 0;
-                p.reverse = Math.random() > 0.5;
-            }
-        });
-    }
-
-    // ── Draw: Subtle rotating globe (top-left corner) ──
-    let globeAngle = 0;
-    function drawGlobe() {
-        const cx = width * 0.1;
-        const cy = height * 0.2;
-        const r = Math.min(width, height) * 0.1;
-
-        // Outer circle
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        ctx.strokeStyle = g(0.06);
-        ctx.lineWidth = 0.6;
-        ctx.stroke();
-
-        // Meridians
-        for (let i = 0; i < 5; i++) {
-            const angle = (i / 5) * Math.PI + globeAngle;
-            const rx = Math.abs(Math.cos(angle)) * r;
-            ctx.beginPath();
-            ctx.ellipse(cx, cy, Math.max(rx, 0.5), r, 0, 0, Math.PI * 2);
-            ctx.strokeStyle = g(0.03 + 0.02 * Math.abs(Math.cos(angle)));
-            ctx.lineWidth = 0.4;
-            ctx.stroke();
-        }
-
-        // Equator
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, r, 2, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = g(0.06);
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-
-        globeAngle += 0.002;
-    }
-
-    // ── Main draw loop ──
     function draw() {
         ctx.clearRect(0, 0, width, height);
 
-        drawGrid();
-        drawIraqOutline();
-        drawConnections();
-        drawDataFlows();
-        drawCities();
-        drawGlobe();
+        // Draw connections
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < CONNECTION_DIST) {
+                    const opacity = (1 - dist / CONNECTION_DIST) * 0.15;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(${GOLD.r},${GOLD.g},${GOLD.b},${opacity})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.stroke();
+                }
+            }
+        }
 
-        time += 0.016;
-        requestAnimationFrame(draw);
+        // Draw particles
+        particles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${GOLD.r},${GOLD.g},${GOLD.b},0.5)`;
+            ctx.fill();
+        });
+
+        // Update positions
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > width) p.vx *= -1;
+            if (p.y < 0 || p.y > height) p.vy *= -1;
+        });
+
+        animationId = requestAnimationFrame(draw);
     }
 
     resize();
+    createParticles();
     draw();
-    window.addEventListener('resize', resize);
+
+    window.addEventListener('resize', () => {
+        resize();
+        createParticles();
+    });
 }
 
 // ── Scroll Effects ──

@@ -11,7 +11,7 @@ const demoText = {
         demo_ai_desc: 'هكذا تبدو لوحة قيادة مؤسستك مع GEO — مراقبة لحظية وتحليل ذكي فوري',
         demo_ai_tb: 'AI Command Center — شركة المثال',
         demo_gis_label: 'عرض تفاعلي',
-        demo_gis_title: 'خريطة نظم المعلومات الجغرافية',
+        demo_gis_title: 'خريطة نظم المعلومات المكانية',
         demo_gis_desc: 'خريطة تفاعلية حقيقية توضح كيف يحلّل GEO البنية التحتية الرقمية جغرافياً',
         demo_gis_tb: 'GEO GIS Platform — بغداد، العراق',
         demo_cyber_label: 'عرض تفاعلي',
