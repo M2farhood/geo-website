@@ -214,388 +214,331 @@ function applyLanguage() {
     });
 }
 
-// ── Canvas GIS & AI Animation ──
+// ── Canvas: GIS Map + AI Neural Animation ──
 function initCanvas() {
     const canvas = document.getElementById('heroCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
-    let width, height, animationId, time = 0;
+    let width, height, time = 0;
     const GOLD = { r: 200, g: 168, b: 78 };
     const g = (a) => `rgba(${GOLD.r},${GOLD.g},${GOLD.b},${a})`;
 
-    // --- State ---
-    let markers = [];
-    let dataParticles = [];
-    let globeAngle = 0;
+    // ── City nodes (represent real Iraqi cities on the map) ──
+    const cityData = [
+        { name: 'Baghdad', lat: 33.31, lon: 44.37, size: 6, primary: true },
+        { name: 'Basra', lat: 30.51, lon: 47.78, size: 4.5, primary: true },
+        { name: 'Erbil', lat: 36.19, lon: 44.01, size: 4.5, primary: true },
+        { name: 'Mosul', lat: 36.34, lon: 43.12, size: 4, primary: false },
+        { name: 'Najaf', lat: 32.00, lon: 44.34, size: 3.5, primary: false },
+        { name: 'Karbala', lat: 32.62, lon: 44.02, size: 3, primary: false },
+        { name: 'Kirkuk', lat: 35.47, lon: 44.39, size: 3.5, primary: false },
+        { name: 'Sulaymaniyah', lat: 35.56, lon: 45.43, size: 3, primary: false },
+        { name: 'Nasiriyah', lat: 31.04, lon: 46.26, size: 3, primary: false },
+        { name: 'Amarah', lat: 31.84, lon: 47.15, size: 2.5, primary: false },
+        { name: 'Tikrit', lat: 34.61, lon: 43.68, size: 2.5, primary: false },
+        { name: 'Samawah', lat: 31.32, lon: 45.28, size: 2.5, primary: false },
+    ];
+
+    // Connections (AI neural links between cities)
+    const connections = [
+        [0, 1], [0, 2], [0, 3], [0, 4], [0, 6],  // Baghdad hub
+        [1, 8], [1, 9], [2, 3], [2, 7], [3, 10],  // Secondary
+        [4, 5], [6, 7], [6, 10], [8, 11], [5, 11], // Tertiary
+    ];
+
+    let cities = [];
+    let dataFlows = [];
+
+    // ── Map projection: lat/lon → canvas coordinates ──
+    // Map bounds (covers Iraq region with padding)
+    const mapBounds = { latMin: 29.5, latMax: 37.5, lonMin: 41.5, lonMax: 49.0 };
+
+    function project(lat, lon) {
+        const px = ((lon - mapBounds.lonMin) / (mapBounds.lonMax - mapBounds.lonMin));
+        const py = 1 - ((lat - mapBounds.latMin) / (mapBounds.latMax - mapBounds.latMin));
+        // Center the map on the canvas with margins
+        const marginX = width * 0.12;
+        const marginY = height * 0.1;
+        const mapW = width - marginX * 2;
+        const mapH = height - marginY * 2;
+        return {
+            x: marginX + px * mapW,
+            y: marginY + py * mapH
+        };
+    }
 
     function resize() {
         width = canvas.width = canvas.offsetWidth;
         height = canvas.height = canvas.offsetHeight;
-        createMarkers();
-        createDataParticles();
+        // Rebuild projected positions
+        cities = cityData.map((c, i) => {
+            const pos = project(c.lat, c.lon);
+            return { ...c, x: pos.x, y: pos.y, phase: i * 0.7, idx: i };
+        });
+        createDataFlows();
     }
 
-    // ── GIS Map Markers ──
-    function createMarkers() {
-        const count = Math.max(6, Math.floor((width * height) / 80000));
-        markers = [];
-        // Place markers with some margin and good spread
-        const cols = Math.ceil(Math.sqrt(count * (width / height)));
-        const rows = Math.ceil(count / cols);
-        const cellW = width / cols;
-        const cellH = height / rows;
-        for (let i = 0; i < count; i++) {
-            const col = i % cols;
-            const row = Math.floor(i / cols);
-            markers.push({
-                x: cellW * (col + 0.2 + Math.random() * 0.6),
-                y: cellH * (row + 0.2 + Math.random() * 0.6),
-                r: 3 + Math.random() * 3,
-                phase: Math.random() * Math.PI * 2,
-                scanSpeed: 0.3 + Math.random() * 0.5,
-                scanRadius: 20 + Math.random() * 30,
-                hasScan: Math.random() > 0.4,
-                importance: Math.random(), // 0-1
-            });
-        }
-    }
-
-    // ── AI Data Particles (travel between markers) ──
-    function createDataParticles() {
-        const count = Math.max(8, Math.floor(markers.length * 1.5));
-        dataParticles = [];
-        for (let i = 0; i < count; i++) {
-            dataParticles.push(spawnParticle());
-        }
-    }
-
-    function spawnParticle() {
-        const fromIdx = Math.floor(Math.random() * markers.length);
-        let toIdx = Math.floor(Math.random() * markers.length);
-        if (toIdx === fromIdx) toIdx = (toIdx + 1) % markers.length;
-        return {
-            from: fromIdx,
-            to: toIdx,
-            t: Math.random(), // progress 0..1
-            speed: 0.002 + Math.random() * 0.004,
-            size: 1.5 + Math.random() * 2,
-            brightness: 0.4 + Math.random() * 0.6,
-        };
-    }
-
-    // ── Draw: Coordinate Grid ──
-    function drawCoordinateGrid() {
-        ctx.strokeStyle = g(0.03);
-        ctx.lineWidth = 0.5;
-        const spacing = 80;
-
-        // Horizontal lines
-        for (let y = spacing; y < height; y += spacing) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(width, y);
-            ctx.stroke();
-        }
-        // Vertical lines
-        for (let x = spacing; x < width; x += spacing) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, height);
-            ctx.stroke();
-        }
-
-        // Tick marks at intersections (faint crosses)
-        ctx.strokeStyle = g(0.06);
-        ctx.lineWidth = 0.8;
-        const tickLen = 4;
-        for (let y = spacing; y < height; y += spacing) {
-            for (let x = spacing; x < width; x += spacing) {
-                ctx.beginPath();
-                ctx.moveTo(x - tickLen, y);
-                ctx.lineTo(x + tickLen, y);
-                ctx.moveTo(x, y - tickLen);
-                ctx.lineTo(x, y + tickLen);
-                ctx.stroke();
-            }
-        }
-    }
-
-    // ── Draw: Terrain Contour Lines ──
-    function drawTerrainGrid() {
-        const lineCount = 12;
-        const baseY = height * 0.15;
-        const rangeY = height * 0.7;
-        ctx.lineWidth = 0.8;
-
-        for (let i = 0; i < lineCount; i++) {
-            const frac = i / lineCount;
-            const opacity = 0.04 + 0.06 * Math.sin(frac * Math.PI);
-            ctx.strokeStyle = g(opacity);
-            ctx.beginPath();
-            const yBase = baseY + frac * rangeY;
-            for (let x = 0; x <= width; x += 4) {
-                const wave1 = Math.sin((x * 0.003) + time * 0.15 + i * 0.8) * 25;
-                const wave2 = Math.sin((x * 0.007) + time * 0.08 + i * 1.3) * 12;
-                const wave3 = Math.sin((x * 0.0015) + time * 0.05) * 35;
-                const y = yBase + wave1 + wave2 + wave3;
-                if (x === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-        }
-    }
-
-    // ── Draw: GIS Map Markers ──
-    function drawMapMarkers() {
-        markers.forEach((m, idx) => {
-            const pulse = 0.6 + 0.4 * Math.sin(time * 1.5 + m.phase);
-
-            // Scan ring (expanding circle)
-            if (m.hasScan) {
-                const scanT = ((time * m.scanSpeed + m.phase) % (Math.PI * 2)) / (Math.PI * 2);
-                const scanR = scanT * m.scanRadius;
-                const scanAlpha = (1 - scanT) * 0.12;
-                ctx.beginPath();
-                ctx.arc(m.x, m.y, scanR, 0, Math.PI * 2);
-                ctx.strokeStyle = g(scanAlpha);
-                ctx.lineWidth = 1;
-                ctx.stroke();
-
-                // Second ring offset
-                const scanT2 = ((time * m.scanSpeed + m.phase + Math.PI) % (Math.PI * 2)) / (Math.PI * 2);
-                const scanR2 = scanT2 * m.scanRadius;
-                const scanAlpha2 = (1 - scanT2) * 0.08;
-                ctx.beginPath();
-                ctx.arc(m.x, m.y, scanR2, 0, Math.PI * 2);
-                ctx.strokeStyle = g(scanAlpha2);
-                ctx.stroke();
-            }
-
-            // Outer glow
-            const glowGrad = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, m.r * 4);
-            glowGrad.addColorStop(0, g(0.15 * pulse));
-            glowGrad.addColorStop(1, g(0));
-            ctx.fillStyle = glowGrad;
-            ctx.beginPath();
-            ctx.arc(m.x, m.y, m.r * 4, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Pin marker (diamond shape for important, circle for others)
-            if (m.importance > 0.7) {
-                // Diamond shape
-                const s = m.r * 1.2 * pulse;
-                ctx.beginPath();
-                ctx.moveTo(m.x, m.y - s * 1.4);
-                ctx.lineTo(m.x + s, m.y);
-                ctx.lineTo(m.x, m.y + s * 1.4);
-                ctx.lineTo(m.x - s, m.y);
-                ctx.closePath();
-                ctx.fillStyle = g(0.6 * pulse);
-                ctx.fill();
-                ctx.strokeStyle = g(0.8);
-                ctx.lineWidth = 0.8;
-                ctx.stroke();
-            } else {
-                // Circle marker
-                ctx.beginPath();
-                ctx.arc(m.x, m.y, m.r * pulse, 0, Math.PI * 2);
-                ctx.fillStyle = g(0.45 * pulse);
-                ctx.fill();
-                ctx.strokeStyle = g(0.5);
-                ctx.lineWidth = 0.6;
-                ctx.stroke();
-            }
-
-            // Tiny coordinate label (simulated)
-            if (m.importance > 0.5 && width > 600) {
-                ctx.font = '8px Inter, monospace';
-                ctx.fillStyle = g(0.15);
-                const lat = (33.3 + (m.y / height) * 2).toFixed(2);
-                const lon = (44.3 + (m.x / width) * 1.5).toFixed(2);
-                ctx.fillText(`${lat}°N ${lon}°E`, m.x + m.r + 6, m.y + 3);
+    function createDataFlows() {
+        dataFlows = [];
+        connections.forEach(([from, to]) => {
+            // 1–2 particles per connection
+            const count = 1 + (cities[from].primary && cities[to].primary ? 1 : 0);
+            for (let i = 0; i < count; i++) {
+                dataFlows.push({
+                    from, to,
+                    t: Math.random(),
+                    speed: 0.0015 + Math.random() * 0.003,
+                    size: 1.5 + Math.random() * 1.5,
+                    reverse: Math.random() > 0.5,
+                });
             }
         });
     }
 
-    // ── Draw: AI Neural Paths (data flowing between markers) ──
-    function drawNeuralPaths() {
-        dataParticles.forEach(p => {
-            const from = markers[p.from];
-            const to = markers[p.to];
+    // ── Draw: Clean lat/lon grid ──
+    function drawGrid() {
+        ctx.lineWidth = 0.5;
+        // Latitude lines (every 1 degree)
+        for (let lat = 30; lat <= 37; lat++) {
+            const p1 = project(lat, mapBounds.lonMin);
+            const p2 = project(lat, mapBounds.lonMax);
+            const isWhole = lat % 2 === 0;
+            ctx.strokeStyle = g(isWhole ? 0.06 : 0.025);
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+            // Label
+            if (isWhole && width > 600) {
+                ctx.font = '9px Inter, monospace';
+                ctx.fillStyle = g(0.1);
+                ctx.fillText(`${lat}°N`, p1.x - 36, p1.y + 3);
+            }
+        }
+        // Longitude lines (every 1 degree)
+        for (let lon = 42; lon <= 48; lon++) {
+            const p1 = project(mapBounds.latMax, lon);
+            const p2 = project(mapBounds.latMin, lon);
+            const isWhole = lon % 2 === 0;
+            ctx.strokeStyle = g(isWhole ? 0.06 : 0.025);
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+            if (isWhole && width > 600) {
+                ctx.font = '9px Inter, monospace';
+                ctx.fillStyle = g(0.1);
+                ctx.fillText(`${lon}°E`, p1.x - 10, p1.y - 8);
+            }
+        }
+    }
+
+    // ── Draw: Simplified Iraq border outline ──
+    function drawIraqOutline() {
+        // Simplified Iraq border coordinates
+        const border = [
+            [29.1, 47.7], [30.0, 48.0], [30.5, 47.8], [31.0, 47.7],
+            [32.0, 47.4], [33.0, 46.0], [33.7, 45.8], [34.5, 45.5],
+            [35.0, 45.7], [35.8, 45.4], [36.3, 45.3], [37.1, 44.8],
+            [37.3, 44.2], [37.1, 43.5], [36.8, 43.0], [36.5, 42.5],
+            [36.8, 42.0], [37.1, 42.4], [37.3, 42.2], [37.1, 41.3],
+            [36.0, 41.2], [35.5, 41.0], [34.5, 41.2], [33.5, 41.5],
+            [33.0, 41.6], [32.5, 42.0], [32.0, 42.5], [31.5, 42.8],
+            [31.0, 43.5], [30.5, 44.0], [30.0, 44.5], [29.5, 45.0],
+            [29.0, 46.0], [28.8, 47.0], [29.1, 47.7],
+        ];
+
+        ctx.beginPath();
+        border.forEach(([lat, lon], i) => {
+            const p = project(lat, lon);
+            if (i === 0) ctx.moveTo(p.x, p.y);
+            else ctx.lineTo(p.x, p.y);
+        });
+        ctx.closePath();
+        ctx.strokeStyle = g(0.12);
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        // Subtle fill
+        ctx.fillStyle = g(0.02);
+        ctx.fill();
+    }
+
+    // ── Draw: City markers ──
+    function drawCities() {
+        cities.forEach(c => {
+            const pulse = 0.7 + 0.3 * Math.sin(time * 0.8 + c.phase);
+            const r = c.size * pulse;
+
+            // Outer glow for primary cities
+            if (c.primary) {
+                const glowR = r * 5;
+                const grad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, glowR);
+                grad.addColorStop(0, g(0.1 * pulse));
+                grad.addColorStop(1, g(0));
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(c.x, c.y, glowR, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Slow scan ring
+                const scanPhase = (time * 0.3 + c.phase) % (Math.PI * 2);
+                const scanT = scanPhase / (Math.PI * 2);
+                const scanR = scanT * 35;
+                ctx.beginPath();
+                ctx.arc(c.x, c.y, scanR, 0, Math.PI * 2);
+                ctx.strokeStyle = g((1 - scanT) * 0.1);
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+            }
+
+            // City dot
+            ctx.beginPath();
+            ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
+            ctx.fillStyle = g(c.primary ? 0.7 * pulse : 0.4 * pulse);
+            ctx.fill();
+
+            // Outer ring
+            ctx.beginPath();
+            ctx.arc(c.x, c.y, r + 1.5, 0, Math.PI * 2);
+            ctx.strokeStyle = g(c.primary ? 0.4 : 0.2);
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+
+            // City name label
+            if (width > 600) {
+                ctx.font = c.primary ? 'bold 10px Inter, sans-serif' : '8px Inter, sans-serif';
+                ctx.fillStyle = g(c.primary ? 0.25 : 0.12);
+                ctx.fillText(c.name, c.x + r + 6, c.y + 3);
+            }
+        });
+    }
+
+    // ── Draw: AI neural connections between cities ──
+    function drawConnections() {
+        connections.forEach(([fromIdx, toIdx]) => {
+            const from = cities[fromIdx];
+            const to = cities[toIdx];
             if (!from || !to) return;
 
-            // Curved path control point
+            // Faint connection line
+            ctx.beginPath();
+            ctx.moveTo(from.x, from.y);
+            // Gentle curve
             const mx = (from.x + to.x) / 2;
             const my = (from.y + to.y) / 2;
             const dx = to.x - from.x;
             const dy = to.y - from.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            const cx = mx + dy * 0.2;
-            const cy = my - dx * 0.2;
-
-            // Draw the path line (very faint)
-            ctx.beginPath();
-            ctx.moveTo(from.x, from.y);
+            const cx = mx + dy * 0.12;
+            const cy = my - dx * 0.12;
             ctx.quadraticCurveTo(cx, cy, to.x, to.y);
-            ctx.strokeStyle = g(0.04);
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
 
-            // Calculate particle position on bezier
+            const isPrimary = from.primary && to.primary;
+            ctx.strokeStyle = g(isPrimary ? 0.08 : 0.04);
+            ctx.lineWidth = isPrimary ? 0.8 : 0.5;
+            ctx.stroke();
+        });
+    }
+
+    // ── Draw: AI data particles flowing along connections ──
+    function drawDataFlows() {
+        dataFlows.forEach(p => {
+            const from = cities[p.reverse ? p.to : p.from];
+            const to = cities[p.reverse ? p.from : p.to];
+            if (!from || !to) return;
+
+            const mx = (from.x + to.x) / 2;
+            const my = (from.y + to.y) / 2;
+            const dx = to.x - from.x;
+            const dy = to.y - from.y;
+            const cx = mx + dy * 0.12;
+            const cy = my - dx * 0.12;
+
+            // Position on bezier
             const t = p.t;
             const invT = 1 - t;
             const px = invT * invT * from.x + 2 * invT * t * cx + t * t * to.x;
             const py = invT * invT * from.y + 2 * invT * t * cy + t * t * to.y;
 
-            // Particle glow
-            const glowR = p.size * 3;
-            const glowGrad = ctx.createRadialGradient(px, py, 0, px, py, glowR);
-            glowGrad.addColorStop(0, g(0.3 * p.brightness));
-            glowGrad.addColorStop(1, g(0));
-            ctx.fillStyle = glowGrad;
+            // Glow
+            const glowR = p.size * 4;
+            const grad = ctx.createRadialGradient(px, py, 0, px, py, glowR);
+            grad.addColorStop(0, g(0.35));
+            grad.addColorStop(1, g(0));
+            ctx.fillStyle = grad;
             ctx.beginPath();
             ctx.arc(px, py, glowR, 0, Math.PI * 2);
             ctx.fill();
 
-            // Particle core
+            // Core
             ctx.beginPath();
             ctx.arc(px, py, p.size, 0, Math.PI * 2);
-            ctx.fillStyle = g(0.7 * p.brightness);
+            ctx.fillStyle = g(0.8);
             ctx.fill();
-
-            // Trail (fading recent positions)
-            const trailLen = 5;
-            for (let i = 1; i <= trailLen; i++) {
-                const tt = Math.max(0, t - i * 0.015);
-                const invTT = 1 - tt;
-                const tx = invTT * invTT * from.x + 2 * invTT * tt * cx + tt * tt * to.x;
-                const ty = invTT * invTT * from.y + 2 * invTT * tt * cy + tt * tt * to.y;
-                const trailAlpha = 0.15 * (1 - i / trailLen) * p.brightness;
-                ctx.beginPath();
-                ctx.arc(tx, ty, p.size * (1 - i * 0.12), 0, Math.PI * 2);
-                ctx.fillStyle = g(trailAlpha);
-                ctx.fill();
-            }
 
             // Advance
             p.t += p.speed;
             if (p.t >= 1) {
-                // Respawn with new target
-                p.from = p.to;
-                p.to = Math.floor(Math.random() * markers.length);
-                if (p.to === p.from) p.to = (p.to + 1) % markers.length;
                 p.t = 0;
-                p.speed = 0.002 + Math.random() * 0.004;
+                p.reverse = Math.random() > 0.5;
             }
         });
     }
 
-    // ── Draw: Globe Wireframe (subtle, bottom-right area) ──
-    function drawGlobeWireframe() {
-        const cx = width * 0.85;
-        const cy = height * 0.75;
-        const r = Math.min(width, height) * 0.28;
-        const meridians = 8;
-        const parallels = 6;
-
-        ctx.lineWidth = 0.5;
+    // ── Draw: Subtle rotating globe (top-left corner) ──
+    let globeAngle = 0;
+    function drawGlobe() {
+        const cx = width * 0.1;
+        const cy = height * 0.2;
+        const r = Math.min(width, height) * 0.1;
 
         // Outer circle
         ctx.beginPath();
         ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        ctx.strokeStyle = g(0.05);
-        ctx.stroke();
-
-        // Parallels (horizontal ellipses)
-        for (let i = 1; i < parallels; i++) {
-            const frac = (i / parallels) * 2 - 1; // -1 to 1
-            const y = cy + frac * r;
-            const ellipseR = Math.sqrt(1 - frac * frac) * r;
-            ctx.beginPath();
-            ctx.ellipse(cx, y, ellipseR, ellipseR * 0.05 + 1, 0, 0, Math.PI * 2);
-            ctx.strokeStyle = g(0.03);
-            ctx.stroke();
-        }
-
-        // Meridians (vertical ellipses rotating)
-        for (let i = 0; i < meridians; i++) {
-            const angle = (i / meridians) * Math.PI + globeAngle;
-            const ellipseRx = Math.abs(Math.cos(angle)) * r;
-            ctx.beginPath();
-            ctx.ellipse(cx, cy, Math.max(ellipseRx, 1), r, 0, 0, Math.PI * 2);
-            ctx.strokeStyle = g(0.03 + 0.015 * Math.abs(Math.cos(angle)));
-            ctx.stroke();
-        }
-
-        // Equator (brighter)
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, r, r * 0.05 + 1, 0, 0, Math.PI * 2);
         ctx.strokeStyle = g(0.06);
-        ctx.lineWidth = 0.8;
+        ctx.lineWidth = 0.6;
         ctx.stroke();
 
-        // Some "data points" on the globe surface
-        for (let i = 0; i < 12; i++) {
-            const theta = (i * 0.83) + globeAngle * 2;
-            const phi = (i * 1.23) % Math.PI;
-            const gx = cx + Math.cos(theta) * Math.sin(phi) * r * 0.9;
-            const gy = cy + Math.cos(phi) * r * 0.9;
-            // Only render if "facing us" (front hemisphere based on cos)
-            const facing = Math.sin(theta) * Math.sin(phi);
-            if (facing > -0.2) {
-                const alpha = 0.08 + facing * 0.12;
-                ctx.beginPath();
-                ctx.arc(gx, gy, 1.5, 0, Math.PI * 2);
-                ctx.fillStyle = g(Math.max(0.02, alpha));
-                ctx.fill();
-            }
+        // Meridians
+        for (let i = 0; i < 5; i++) {
+            const angle = (i / 5) * Math.PI + globeAngle;
+            const rx = Math.abs(Math.cos(angle)) * r;
+            ctx.beginPath();
+            ctx.ellipse(cx, cy, Math.max(rx, 0.5), r, 0, 0, Math.PI * 2);
+            ctx.strokeStyle = g(0.03 + 0.02 * Math.abs(Math.cos(angle)));
+            ctx.lineWidth = 0.4;
+            ctx.stroke();
         }
 
-        globeAngle += 0.003;
-    }
+        // Equator
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, r, 2, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = g(0.06);
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
 
-    // ── Draw: Floating data labels (HUD style) ──
-    function drawHUDLabels() {
-        if (width < 700) return; // Skip on mobile
-        ctx.font = '9px Inter, monospace';
-
-        const labels = [
-            { x: width * 0.08, y: height * 0.12, text: 'LAYER: TERRAIN_ANALYSIS' },
-            { x: width * 0.08, y: height * 0.15, text: 'STATUS: ACTIVE' },
-            { x: width * 0.75, y: height * 0.1, text: 'AI_MODEL: SPATIAL_NET_v3' },
-            { x: width * 0.75, y: height * 0.13, text: 'NODES: ' + markers.length },
-            { x: width * 0.05, y: height * 0.92, text: 'GEO :: GIS + AI FUSION ENGINE' },
-        ];
-
-        labels.forEach((lbl, i) => {
-            const flicker = 0.08 + 0.04 * Math.sin(time * 2 + i * 1.7);
-            ctx.fillStyle = g(flicker);
-            ctx.fillText(lbl.text, lbl.x, lbl.y);
-        });
+        globeAngle += 0.002;
     }
 
     // ── Main draw loop ──
     function draw() {
         ctx.clearRect(0, 0, width, height);
 
-        drawCoordinateGrid();
-        drawTerrainGrid();
-        drawGlobeWireframe();
-        drawNeuralPaths();
-        drawMapMarkers();
-        drawHUDLabels();
+        drawGrid();
+        drawIraqOutline();
+        drawConnections();
+        drawDataFlows();
+        drawCities();
+        drawGlobe();
 
-        time += 0.016; // ~60fps time step
-        animationId = requestAnimationFrame(draw);
+        time += 0.016;
+        requestAnimationFrame(draw);
     }
 
     resize();
     draw();
-
-    window.addEventListener('resize', () => {
-        resize();
-    });
+    window.addEventListener('resize', resize);
 }
 
 // ── Scroll Effects ──
