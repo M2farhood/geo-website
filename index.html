@@ -23,7 +23,7 @@
     <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-container">
-            <a href="#hero" class="nav-logo">GEO</a>
+            <a href="#hero" class="nav-logo"><img src="geo-logo.png" alt="GEO"></a>
             <div class="nav-links">
                 <a href="#about" data-i18n="nav_about">عن GEO</a>
                 <a href="#services" data-i18n="nav_services">خدماتنا</a>
@@ -52,9 +52,11 @@
     <section id="hero">
         <canvas id="heroCanvas"></canvas>
         <div class="hero-content">
-            <div class="hero-logo">GEO</div>
+            <div class="hero-logo"><img src="geo-logo.png" alt="GEO"></div>
             <h1 data-i18n="hero_title">حلول تقنية نخبوية</h1>
             <p class="hero-subtitle" data-i18n="hero_subtitle">أول شركة حلول تقنية نخبوية متعددة التخصصات في العراق</p>
+            <p class="hero-differentiator" data-i18n="hero_diff">لا نفرض حلولاً جاهزة — ندخل مؤسستك، نفهم كيف تعمل
+                فعلاً، ثم نبني ما يناسبها</p>
             <div class="hero-model">
                 <span data-i18n="hero_m1">اندماج</span>
                 <span class="dot">·</span>
@@ -78,11 +80,11 @@
             <h2 class="section-title" data-i18n="about_title">نوع جديد من شركات التقنية</h2>
             <div class="about-grid">
                 <div class="about-text">
-                    <p data-i18n="about_p1">شركة GEO هي نوع جديد من شركات التقنية، صُمّمت خصيصاً للسوق العراقي. لا تبيع
-                        برامج جاهزة ولا تقدّم خدمات تقنية مجزّأة، بل تتحمّل المسؤولية الكاملة عن التحوّل الرقمي للمؤسسة
-                        من الداخل إلى الخارج.</p>
-                    <p data-i18n="about_p2">نحن نندمج داخل المؤسسة العميلة، ندرس سير عملها الحقيقي، نشخّص الفجوات، ثم
-                        نصمّم وننفّذ أنظمة ملائمة — لا أدوات عامّة مفروضة على بيئات لا تناسبها.</p>
+                    <p class="about-lead" data-i18n="about_p1">المؤسسات لا تتأخّر تقنياً لأن الحلول غير موجودة — بل لأن
+                        أحداً لم يأخذ الوقت ليفهم كيف تعمل هذه المؤسسات فعلاً قبل أن يقترح حلاً.</p>
+                    <p data-i18n="about_p2">GEO تغيّر هذه المعادلة. نندمج داخل مؤسستك، نعيش يومها، نشخّص الفجوات
+                        الحقيقية، ثم نصمّم وننفّذ أنظمة صُنعت لواقعك — لا أدوات عامّة فُرضت على بيئة لا تناسبها. نتحمّل
+                        المسؤولية الكاملة: من التشخيص إلى التسليم والدعم المستمر.</p>
                 </div>
                 <div class="about-stats">
                     <div class="stat-item">
@@ -638,9 +640,16 @@
                 <div class="method-line"></div>
 
                 <div class="method-step" data-aos="fade-up">
-                    <div class="method-number">01</div>
+                    <div class="method-number">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28"
+                            height="28">
+                            <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            <path d="M2 12c2.5-5 6.5-8 10-8s7.5 3 10 8c-2.5 5-6.5 8-10 8s-7.5-3-10-8Z" />
+                        </svg>
+                    </div>
                     <div class="method-content">
                         <h3 data-i18n="m_step1_title">الاندماج</h3>
+                        <span class="method-tagline" data-i18n="m_step1_tag">نعيش واقعك قبل أن نصمّم شيئاً</span>
                         <p data-i18n="m_step1_desc">نرسل متخصصينا إلى داخل مؤسستك. يجلسون مع كل قسم، يراقبون العمليات
                             اليومية، يوثّقون سير العمل بالتفصيل — لأسبوعين إلى ثلاثة أسابيع.</p>
                     </div>
@@ -648,9 +657,16 @@
                 </div>
 
                 <div class="method-step" data-aos="fade-up" data-aos-delay="150">
-                    <div class="method-number">02</div>
+                    <div class="method-number">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28"
+                            height="28">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.35-4.35" />
+                        </svg>
+                    </div>
                     <div class="method-content">
                         <h3 data-i18n="m_step2_title">التشخيص</h3>
+                        <span class="method-tagline" data-i18n="m_step2_tag">نحدّد المشكلة الحقيقية بدقة جراحية</span>
                         <p data-i18n="m_step2_desc">يجتمع الفريق كاملاً لمراجعة التقرير التشخيصي. نحدّد أين يمكن للذكاء
                             الاصطناعي وGIS والأمن السيبراني أن تخلق أكبر قيمة، ونضع خطة تدخّل مرتّبة.</p>
                     </div>
@@ -658,9 +674,16 @@
                 </div>
 
                 <div class="method-step" data-aos="fade-up" data-aos-delay="300">
-                    <div class="method-number">03</div>
+                    <div class="method-number">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28"
+                            height="28">
+                            <path d="M12 20h9" />
+                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5Z" />
+                        </svg>
+                    </div>
                     <div class="method-content">
                         <h3 data-i18n="m_step3_title">التصميم</h3>
+                        <span class="method-tagline" data-i18n="m_step3_tag">كل متخصص يبني في مجال تميّزه فقط</span>
                         <p data-i18n="m_step3_desc">كل متخصص يبني في مجاله: الذكاء الاصطناعي، GIS، الأمن السيبراني،
                             البنية التحتية — بتركيز تام وبدون تداخل. النتيجة: جودة أعلى وسرعة أكبر.</p>
                     </div>
@@ -668,9 +691,15 @@
                 </div>
 
                 <div class="method-step" data-aos="fade-up" data-aos-delay="450">
-                    <div class="method-number">04</div>
+                    <div class="method-number">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28"
+                            height="28">
+                            <path d="M5 12l5 5L20 7" />
+                        </svg>
+                    </div>
                     <div class="method-content">
                         <h3 data-i18n="m_step4_title">التنفيذ</h3>
+                        <span class="method-tagline" data-i18n="m_step4_tag">نسلّم، ندرّب، ونبقى معك</span>
                         <p data-i18n="m_step4_desc">نسلّم نظاماً مكتملاً مع توثيق شامل وتدريب عملي. ثم نبقى — دعم تقني
                             مستمر يضمن أن النظام يتطوّر مع احتياجاتك.</p>
                     </div>
@@ -680,34 +709,59 @@
         </div>
     </section>
 
-    <!-- Research Section -->
+    <!-- Research & Vision Section -->
     <section id="research" class="section section-accent">
         <div class="container">
             <div class="section-badge" data-i18n="research_badge">الأبحاث والابتكار</div>
-            <h2 class="section-title" data-i18n="research_title">ما وراء الخدمات — نحو الابتكار</h2>
-            <p class="section-desc" data-i18n="research_desc">GEO لا تبني شركة لتبقى بنفس الحجم — بل منصة للتوسع في أكثر
-                مجالات التقنية تقدماً</p>
+            <h2 class="section-title" data-i18n="research_title">نحن لا نلاحق المستقبل — نستعد له</h2>
+            <p class="section-desc" data-i18n="research_desc">الذكاء الاصطناعي غيّر قواعد اللعبة. لكن ما هو قادم أضخم
+                بعشر مرات.</p>
+
+            <!-- Quantum Vision Statement -->
+            <div class="research-vision" data-aos="fade-up">
+                <div class="quantum-atom">
+                    <div class="atom-nucleus"></div>
+                    <div class="atom-orbit orbit-1">
+                        <div class="atom-electron"></div>
+                    </div>
+                    <div class="atom-orbit orbit-2">
+                        <div class="atom-electron"></div>
+                    </div>
+                    <div class="atom-orbit orbit-3">
+                        <div class="atom-electron"></div>
+                    </div>
+                </div>
+                <p class="vision-statement" data-i18n="research_vision">الحوسبة الكمومية ليست مجرد تطوّر — إنها قفزة في
+                    طريقة الحساب نفسها. بينما يحاول العالم مواكبة الذكاء الاصطناعي، نحن نبني القدرات لما بعده.</p>
+            </div>
 
             <div class="research-grid">
                 <div class="research-card" data-aos="fade-up">
+                    <div class="research-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.2" width="32"
+                            height="32">
+                            <circle cx="12" cy="12" r="3" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(0 12 12)" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
+                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
+                        </svg>
+                    </div>
                     <h3 data-i18n="r_quantum_title">الحوسبة الكمومية</h3>
-                    <p data-i18n="r_quantum_desc">استكشاف التطبيقات العملية للخوارزميات الكمومية في التحسين والمحاكاة
-                        واتخاذ القرار</p>
+                    <p data-i18n="r_quantum_desc">بناء القدرات والخبرات في الخوارزميات الكمومية — من التحسين والمحاكاة
+                        إلى النمذجة الاقتصادية واتخاذ القرار الاستراتيجي</p>
                 </div>
-                <div class="research-card" data-aos="fade-up" data-aos-delay="100">
-                    <h3 data-i18n="r_models_title">نماذج اقتصادية كمومية</h3>
-                    <p data-i18n="r_models_desc">نماذج اقتصادية مبنية على الحوسبة الكمومية للتنبّؤ وتقييم المخاطر
-                        والتخطيط الاستراتيجي</p>
-                </div>
-                <div class="research-card" data-aos="fade-up" data-aos-delay="200">
-                    <h3 data-i18n="r_ai_title">نمذجة ذكاء اصطناعي متقدمة</h3>
-                    <p data-i18n="r_ai_desc">دفع حدود ما يمكن أن يحققه الذكاء الاصطناعي في القطاعات ذات الصلة بالسوق
-                        العراقي والإقليمي</p>
-                </div>
-                <div class="research-card" data-aos="fade-up" data-aos-delay="300">
-                    <h3 data-i18n="r_product_title">مخرجات قابلة للتسويق</h3>
-                    <p data-i18n="r_product_desc">أبحاث تولّد إيرادات — حلول مُنتَجة وجاهزة للبيع، ليست مجرد تمارين
-                        أكاديمية</p>
+                <div class="research-card" data-aos="fade-up" data-aos-delay="150">
+                    <div class="research-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.2" width="32"
+                            height="32">
+                            <path d="M12 2L2 7l10 5 10-5-10-5Z" />
+                            <path d="M2 17l10 5 10-5" />
+                            <path d="M2 12l10 5 10-5" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="r_applied_title">ذكاء تطبيقي مُنتَج</h3>
+                    <p data-i18n="r_applied_desc">أبحاث تتحوّل إلى حلول جاهزة للبيع — نماذج ذكاء اصطناعي متقدمة مصمّمة
+                        لقطاعات السوق العراقي والإقليمي، وليست تمارين أكاديمية</p>
                 </div>
             </div>
         </div>
@@ -775,7 +829,7 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">GEO</div>
+                <div class="footer-logo"><img src="geo-logo.png" alt="GEO"></div>
                 <p data-i18n="footer_tagline">الخطوة الأولى نحو بناء مستقبل العراق التقني تبدأ من هنا</p>
             </div>
             <div class="footer-bottom">
