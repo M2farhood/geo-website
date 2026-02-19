@@ -91,6 +91,13 @@ const translations = {
         cta_btn_email: 'تواصل عبر البريد',
         footer_tagline: 'الخطوة الأولى نحو بناء مستقبل العراق التقني تبدأ من هنا',
         footer_rights: 'جميع الحقوق محفوظة',
+        nav_academy: 'أكاديمية GEO',
+        academy_badge: 'قادة المستقبل',
+        academy_title: 'نحن لا نوظف فقط — نحن نبني',
+        academy_desc: 'لأن معاييرنا استثنائية، من الصعب إيجاد كفاءات جاهزة تلبيها محلياً. بدلاً من المساومة، نستقطب العقول الشابة المتميزة، ندربهم بقوة على أحدث التقنيات، وندمجهم في نظامنا بعقود طويلة الأمد. نحن نبني كبار مهندسي المستقبل بينما نبني شركتنا.',
+        academy_phase1_badge: 'المرحلة الأولى',
+        academy_phase1_title: 'Geo AI',
+        academy_phase1_desc: 'تقاطع الذكاء الاصطناعي مع نظم المعلومات المكانية. تدريب مكثف لإعداد الجيل القادم من مهندسي الحلول المكانية الذكية.',
     },
     en: {
         nav_about: 'About',
@@ -178,6 +185,13 @@ const translations = {
         cta_btn_email: 'Contact Us',
         footer_tagline: 'The first step toward building Iraq\'s technology future starts here',
         footer_rights: 'All rights reserved',
+        nav_academy: 'GEO Academy',
+        academy_badge: 'Future Leaders',
+        academy_title: 'We Don\'t Just Hire — We Build',
+        academy_desc: 'Because our standards are exceptionally high, finding ready-made talent locally is a challenge. Instead of compromising, we recruit brilliant fresh minds, train them aggressively on the latest technologies, and integrate them into our ecosystem through long-term contracts. We are building our future seniors while building our company.',
+        academy_phase1_badge: 'Phase 1',
+        academy_phase1_title: 'Geo AI',
+        academy_phase1_desc: 'The intersection of Artificial Intelligence and GIS. Intensive training to prepare the next generation of smart spatial solution engineers.',
     }
 };
 

@@ -1079,6 +1079,69 @@ footer {
     transform: translateY(0);
 }
 
+/* ── Academy Section ── */
+.academy-phase {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius);
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-top: 48px;
+    transition: var(--transition);
+}
+
+.academy-phase:hover {
+    border-color: rgba(200, 168, 78, 0.3);
+    box-shadow: 0 0 40px rgba(200, 168, 78, 0.05);
+}
+
+.phase-meta {
+    flex-shrink: 0;
+}
+
+.phase-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: var(--gold-glow);
+    color: var(--gold-light);
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.phase-content {
+    flex: 1;
+}
+
+.phase-content h3 {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+.phase-content p {
+    font-size: 16px;
+    color: var(--gray-300);
+    line-height: 1.8;
+}
+
+.phase-visual {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(200, 168, 78, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px dashed rgba(200, 168, 78, 0.3);
+}
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
     .services-big-three {
@@ -1115,6 +1178,13 @@ footer {
 }
 
 @media (max-width: 768px) {
+    .academy-phase {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+        gap: 24px;
+    }
+
     .nav-links {
         display: none;
     }
